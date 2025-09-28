@@ -1,0 +1,87 @@
+[gd_scene load_steps=10 format=3 uid="uid://dwn6lhqk87gbq"]
+
+[ext_resource type="Texture2D" uid="uid://b1x0yv4c6uqfx" path="res://player-idle1.png" id="1_iqbhl"]
+[ext_resource type="Texture2D" uid="uid://dg87le0j5lqdp" path="res://player-idle2.png" id="2_bx7kq"]
+[ext_resource type="Texture2D" uid="uid://dxs0itelk2jh" path="res://player-idle3.png" id="3_y6e2s"]
+[ext_resource type="Texture2D" uid="uid://crr2q7oo7vx6x" path="res://player-idle4.png" id="4_w4kdy"]
+[ext_resource type="Texture2D" uid="uid://dbwr4wcqitquh" path="res://player-idle5.png" id="5_15gc4"]
+[ext_resource type="Texture2D" uid="uid://b7w23ixco3o2o" path="res://player-idle6.png" id="6_eodqj"]
+
+[sub_resource type="GDScript" id="GDScript_iqbhl"]
+script/source = "extends CharacterBody2D
+
+
+const SPEED = 180.0
+const JUMP_VELOCITY = -400.0
+
+@onready var sprite = $AnimatedSprite2D
+
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and hadndle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis(\"MoveLeft\", \"MoveRight\")
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		
+	if velocity.x < 0:
+		sprite.flip_h = true
+	elif velocity.x > 0:
+		sprite.flip_h = false
+
+	move_and_slide()
+
+	
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8c55o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_iqbhl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_bx7kq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_y6e2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_w4kdy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_15gc4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_eodqj")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iqbhl"]
+size = Vector2(20, 27)
+
+[node name="Astraeus" type="CharacterBody2D" groups=["Player"]]
+safe_margin = 0.001
+script = SubResource("GDScript_iqbhl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -18)
+sprite_frames = SubResource("SpriteFrames_8c55o")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, -13)
+shape = SubResource("RectangleShape2D_iqbhl")

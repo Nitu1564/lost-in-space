@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://3o5w0hlq83ar"]
+
+[ext_resource type="Texture2D" uid="uid://btgy7lwejbybc" path="res://lizard-move2.png" id="1_r6eub"]
+[ext_resource type="Texture2D" uid="uid://bp5oiyk1t7q06" path="res://lizard-move1.png" id="2_sahs1"]
+[ext_resource type="Texture2D" uid="uid://towkb3i44o2d" path="res://lizard-move3.png" id="3_bx8iw"]
+[ext_resource type="PackedScene" uid="uid://bwellv6lpjk22" path="res://killzone.tscn" id="4_sahs1"]
+
+[sub_resource type="GDScript" id="GDScript_sahs1"]
+script/source = "extends Node2D
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	position.x += 1
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h607f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_r6eub")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_sahs1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bx8iw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_sahs1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -2)
+sprite_frames = SubResource("SpriteFrames_h607f")
+autoplay = "default"
+frame_progress = 0.9425223
+
+[node name="killzone" parent="." instance=ExtResource("4_sahs1")]
+position = Vector2(3, 3)

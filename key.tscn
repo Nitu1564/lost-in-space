@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://cidmrqutm7tgv"]
+
+[ext_resource type="Texture2D" uid="uid://cf7ya4rhggdmk" path="res://Key.png" id="1_up4cr"]
+
+[sub_resource type="GDScript" id="GDScript_up4cr"]
+script/source = "extends Area2D
+
+
+func _on_body_entered(body):
+	print(\"+key\")
+	queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p0yg6"]
+
+[node name="Key" type="Area2D"]
+script = SubResource("GDScript_up4cr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 0)
+texture = ExtResource("1_up4cr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_p0yg6")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
